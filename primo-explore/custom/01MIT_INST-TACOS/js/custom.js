@@ -5,7 +5,6 @@
 
   var app = angular.module("viewCustom", ["angularLoad"]);
   app.factory("tacosService", ["$http", function ($http) {
-    var searchQuery = "";
     return {
       sendQueryToTacos: function (searchTerm) {
         var graphQlQuery = `{
@@ -32,13 +31,6 @@
         };
         return $http(req);
       },
-
-      getSearchQuery: function () {
-        return searchQuery;
-      },
-      setSearchQuery: function (query) {
-        searchQuery = query;
-      },
     };
   }]);
   app.component("prmSearchBookmarkFilterAfter", {
@@ -53,40 +45,51 @@
     template: `<tacos></tacos>${alertBannerTemplate}`,
   });
   app.component("tacos", {
-    controller: function ($scope, tacosService) {
+    controller: function tacosController($scope, tacosService, $stateParams) {
+      // $stateParams seems to behave like an angularJS service, but I'm not sure
+      // where in the Primo VE source code it is defined...
+      // We are able to inject it in the controller and then get access to the .query property
+      // which is the raw search string(s) we want to send to TACOS
+
       var vm = this;
 
+      function parseSearchQuery(searchQuery) {
+        // Returns searchQuery if it is a string.
+        // If searchQuery is an array of strings, joins the strings and returns the result
+
+        if (typeof searchQuery === "string") { // handle a string (simple search)
+          return searchQuery;
+        }
+        return searchQuery.join(" "); // handle an array of strings (advanced search)
+      }
+
       $scope.$watch(function () {
-        
-        return tacosService.getSearchQuery(); 
-      }, function (searchQuery, previousSearchQuery) {
-        if (searchQuery === previousSearchQuery) {console.log('The $.watch listener function for tacosService.getSearchQuery() was called due to initiliazation')}
-        tacosService.sendQueryToTacos(searchQuery).then(
-          function (response) {
-            console.log(response);
-           
-            vm.searchTerms = response.data.data.logSearchEvent.phrase;
-          },
+        // Watch for changes to the $stateParams.query property
+
+        return parseSearchQuery(
+          $stateParams.query,
         );
+      }, function (newSearchQuery) {
+        // This listener function triggers when the watcher is first initialized and
+        // each time the results of the watched expression change afterward.
+        // During the initial trigger, the listener will send a search query to TACOS
+        // if the client's initial request to Primo includes search parameters.
+        // This behavior is desirable because it ensures that TACOS receives a search query
+        // right from the start. Without it, TACOS would only receive queries on subsequent user searches.
+
+        if (newSearchQuery) { //avoid sending 'undefined' searches to TACOS
+          tacosService.sendQueryToTacos(newSearchQuery).then(
+            function (response) {
+              console.log(response);
+              vm.searchTerms = response.data.data.logSearchEvent.phrase;
+            },
+          );
+        }
       });
     },
 
     template:
-      `<p>this is the tacos component: TACOS says"{{$ctrl.searchTerms }}" </p>`,
-  });
-  app.component("prmSearchResultListAfter", {
-    bindings: {
-      parentCtrl: "<",
-    },
-    controller: function (tacosService) {
-      var vm = this;
-      vm.$onInit = function () {
-        // the parent controller prmSearchResultsList provides a parsed search query, which is why we need to
-        // access and set it in the TACOS service here rather than doing so in the TACOS controller or it's parent.
-        console.log("prmSearchResultsListAfter vm: ", vm)
-        tacosService.setSearchQuery(vm.parentCtrl.$stateParams.query);
-      };
-    },
+      `<p ng-if="$ctrl.searchTerms">this is the tacos component: TACOS says"{{$ctrl.searchTerms }}" </p>`,
   });
 
   app.component("prmAtozSearchBarAfter", {
