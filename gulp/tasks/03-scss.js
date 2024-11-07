@@ -75,7 +75,7 @@ gulp.task('compile-scss',() => {
         }))
         // .pipe(sourcemaps.init())
         .pipe(sass())
-        .pipe(autoprefixer({    
+        .pipe(autoprefixer({
             cascade: false
         }));
     let colorStream = allCss

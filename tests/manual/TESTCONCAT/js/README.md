@@ -73,15 +73,15 @@ To solve this you can replace the '`' with regular apostrophe ("'") and use a si
 
 ![Show Directives image](../../help_files/showDirectives.png "Show Directives Changes")
 
--  Edit the primo-explore/custom/js/custom.js file and add a component declaration for `myInstitutionComponent` and a component declaration 
+-  Edit the primo-explore/custom/js/custom.js file and add a component declaration for `myInstitutionComponent` and a component declaration
 for the `prmSearchBarAfter` directive
 
     ```
     app.component('myInstitutionComponent', {
-    
-    
+
+
     });
-    
+
     app.component('prmSearchBarAfter', {
 
 
@@ -94,15 +94,15 @@ for the `prmSearchBarAfter` directive
         template: `<span style="margin-left: 40%;">Hello World</span>`
     });
     ```
--  Add the template property with your component template (myInstitutionComponent) 
-    
+-  Add the template property with your component template (myInstitutionComponent)
+
     ```
     app.component('prmSearchBarAfter', {
             bindings: {parentCtrl: `<`},
-            template: `<my-institution-component></my-institution-component>`    
+            template: `<my-institution-component></my-institution-component>`
     });
     ```
-        
+
 
 -  Save and refresh your browser
 
@@ -161,7 +161,7 @@ app.controller('MyInstitutionComponentController', [function () {
 -  Edit the `prmSearchBarAfter` directive template to reference the `myInstitutionComponent`
 ```
 template: `<my-institution-component parent-ctrl="$ctrl.parentCtrl"></my-institution-component>`
-``` 
+```
 -  Edit the `myInstitutionComponent` directive template to reference the getter methods
 ```
 template: `<div layout="row" layout-align="center center">
@@ -230,7 +230,7 @@ app.controller('MyInstitutionComponentController', ['angularLoad', function (ang
 -  Edit the `prmFullViewAfter` directive template to reference the `myInstitutionComponent`
 ```
 template: `<my-institution-component parent-ctrl="$ctrl.parentCtrl"></my-institution-component>`
-``` 
+```
 - Edit the `myInstitutionComponent` directive template to add the Altmetrics div and bind the data-doi attribute to the controller
 ```
 app.component('myInstitutionComponent', {
