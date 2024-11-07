@@ -57,17 +57,17 @@ Note: If you are not the Administrator of your machine, you might get into probl
 
 9. Populate your custom View package folder in the custom package folder ("...primo-explore\custom"), by either downloading the view code files from your Primo Back Office or using the [primo-explore-package GitHub repository](https://github.com/ExLibrisGroup/primo-explore-package "primo-explore-package repository")) to start a new package folder. (if you have already defined a view package and loaded it to the BO - make sure you download it or else you will not see, and may overwrite, your previous changes.)
 
-   - If your custom view package folder were to be called "Auto1" then your development environment directory tree should look similar to this: 
+   - If your custom view package folder were to be called "Auto1" then your development environment directory tree should look similar to this:
    ![Directory tree image](./help_files/direcoryTree.png "Directory tree")
-   
+
    - <b>IMPORTANT:</b> The name of your custom view package folder must match an <i>existing</i> view on the proxy server being referenced or the Gulp server will not function properly. For development from scratch, be sure to first create (or copy) a view using the Primo Back Office View Wizard; then you can accomplish your customizations locally using this document.
-    
-10. Start your code customizations : 
+
+10. Start your code customizations :
 
    - From command line, run the command : `gulp run --view <the VIEW_CODE folder>` (This will start your local server.)
-   
+
      (For example, running `gulp run --view Auto1` will start the environment taking the customizations from the <b>Auto1</b> folder.)
-     
+
      ![Server Startup Image](./help_files/serverStartup.png "Server Startup")
    - For Primo VE customers, add the --ve flag :
       `gulp run --view <the VIEW_CODE folder> --ve`
@@ -75,7 +75,7 @@ Note: If you are not the Administrator of your machine, you might get into probl
    - For Primo VE customers open the following URL : `localhost:8003/discovery/?vid=your-institution-code:your-view-code`
 
    -  Now you should be able to to your customizations with real searches and results, from your previously defined proxy-server. Note: once you start working with this environment, you will discover that the best results are achieved by working in your browser's incognito mode; or you can clear your browser cache before you start the Gulp server.
-   
+
    ![Env up Image](./help_files/searchResults.png "Env up")
 
    -  You can get immediate feedback on your code changes by refreshing the browser.

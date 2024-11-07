@@ -6,7 +6,7 @@
 
     1.1 Installation
     1.2 test concat:
-    
+
        gulp run --view TESTCONCAT
        gulp run --view TESTCONCAT --ve
 
@@ -25,7 +25,7 @@
         1.2.7 uplocag to BO and test deployment
 
     1.3 test browserify:
-    
+
         gulp run --view TESTBROWSERIFY --browserify
 
         gulp run --view TESTBROWSERIFY --browserify --proxy https://***:443 --ve
@@ -48,4 +48,3 @@
 
 
 REPEAT WITH --VE
-

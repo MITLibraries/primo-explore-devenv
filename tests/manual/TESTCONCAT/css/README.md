@@ -85,7 +85,7 @@ prm-topbar.md-primoExplore-theme input {....}
       "positive": "#0f7d00",
       "negative": "gray",
       "notice": "#e08303"
-    }    
+    }
     ```
 
 -  Since November 2016 release - we are giving you the ability to easily customize the majority of the following
@@ -159,10 +159,3 @@ prm-search > md-content.md-primoExplore-theme .main, prm-search > md-content.md-
 
 
  ![Facets image](../../help_files/facets.png "Factes Changes")
-
-
-
-
-
-
-

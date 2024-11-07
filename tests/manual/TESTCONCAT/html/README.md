@@ -23,19 +23,19 @@
 
 ## Email templates
   Starting from 2020 Primo supports a new html template to customize email messages sent to patrons'.
-  
+
   To customize this template create a file named email_fr_FR.html (based on your language suffix) and upload it using the html directory in your customization package.
-  
+
   In this html file you can design your own email template using html.
-  
+
   Since Primo supports the email action on multiple records you should add the following attribute to the html element represnting a record:
-  
+
   ```ng-if="$ctrl.parentCtrl.fullViewLoaded" ng-repeat="item in $ctrl.parentCtrl.delayedItems"```
-  
+
   for example:
-  
+
   For an email template layout as below the attribute should be added to the records container:
-  
+
   ```
   <header>
       <logo>
@@ -50,13 +50,13 @@
       </records>
       <footer>
       </footer>
-  </content>  
+  </content>
   ```
-  
+
   When editing the template you can:
-  
+
   1. Use regular html (use best practices for email templating: https://mailchimp.com/help/about-html-email/) to design the layout of your email based on your preferences.
-  
+
   2. You can take advantage of some of our OTB directives in your templates:
 ```
       <prm-brief-result
@@ -70,16 +70,16 @@
     <prm-search-result-availability-line tabindex="-1" [result]="item" display-mode="email"></prm-search-result-availability-line>
 
     <prm-logo style="height: 66px;"></prm-logo>
-    
- ```   
+
+ ```
  3. You can reference the sent item(pnx/record) using angular syntax to present the relevant data:
- 
-  use the curly brackets to access the pnx diectly - for example: 
+
+  use the curly brackets to access the pnx diectly - for example:
 ```
    {{item.pnx.display.title}}
 ```
   or loop over values using the ng-repeat directive to add multiple fields:
-  
+
 ```<div dir="auto" ng-repeat="oclcid in     item.pnx.addata.oclcid">
     <div style="font-weight: 600;margin-top:2em;"> Additional Information From the Record:</div>
     <span ng-if="item.pnx.addata.oclcid" atyle="">OCLCID: </span>
@@ -95,8 +95,8 @@
 **Notice :** Any link in your template will be removed - for security reasons, we will not allow links other than the link to the record to avoid email exploits.
 
 To add the link to the full record you can either:
- 1. Use the 
- 
+ 1. Use the
+
  ```
  <prm-brief-result
              class="result-item-details"
@@ -104,7 +104,7 @@ To add the link to the full record you can either:
              display-mode="email"
              layout="column">
      </prm-brief-result>
- ```    
+ ```
 directive in your template - This includes the link to the record
 
 2. Use the following code snippet in your template:
@@ -115,9 +115,9 @@ directive in your template - This includes the link to the record
       {{item.pnx.display.title[0]}}
     </a>
     ```
-     
+
 To use your library logo (not the OTB <prm-logo></prm-logo>) you can use your own html, with an img element that has a class attribute of *logo-image* immediatly following the opening tag, for example:
- 
+
  ```
  <table height="60px" width="600" cellpadding="0" cellspacing="0" border="0" align="center" class="wrapper" bgcolor="#17bef7">
     <tbody>
@@ -129,24 +129,20 @@ To use your library logo (not the OTB <prm-logo></prm-logo>) you can use your ow
     </tbody>
 </table>
 ```
-    
-    
- ## Examples        
-        
+
+
+ ## Examples
+
  Full examples of email templates can be found in the help files folder folder:
- 
+
    1. [The Out of the Box template for emails](../../help_files/email_en_US.html) email_en_US.html
-   
+
    2. [A template based on the OTB - brief + custom fields + availability](../../help_files/email_en_US-brief+additionalField+availability.html)
     will produce the following email:
-   
-   ![example brief](../../help_files/example-bried-and-subject.png "example brief")     
- 
+
+   ![example brief](../../help_files/example-bried-and-subject.png "example brief")
+
    3. [A template based on an open source email template with no Primo directives - just use of the ```{{item.pnx.display.title}}```](../../help_files/email_en_US_Details.html)
     will produce the following email:
-    
+
    ![example external](../../help_files/example-external.png "example external")
-
-
-
-
