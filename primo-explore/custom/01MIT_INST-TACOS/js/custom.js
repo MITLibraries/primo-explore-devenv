@@ -8,9 +8,9 @@
     "$http",
     function ($http) {
       return {
-        sendQueryToTacos: function (searchTerm) {
+        sendQueryToTacos: function (searchQuery) {
           var graphQlQuery = `{
-          logSearchEvent(searchTerm: "${searchTerm}", sourceSystem: "primo-testing") {
+          logSearchEvent(searchTerm: "${searchQuery}", sourceSystem: "primo-testing") {
             phrase
             detectors {
               suggestedResources {
@@ -87,14 +87,14 @@
               .sendQueryToTacos(newSearchQuery)
               .then(function (response) {
                 console.log(response);
-                vm.searchTerms = response.data.data.logSearchEvent.phrase;
+                vm.tacosResponse = response.data.data.logSearchEvent.phrase;
               });
           }
         }
       );
     },
 
-    template: `<p ng-if="$ctrl.searchTerms">this is the tacos component: TACOS says"{{$ctrl.searchTerms }}" </p>`,
+    template: `<p ng-if="$ctrl.tacosResponse">this is the tacos component: TACOS says"{{$ctrl.tacosResponse}}" </p>`,
   });
 
   app.component("prmAtozSearchBarAfter", {
