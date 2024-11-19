@@ -4,10 +4,12 @@
     '<div class="full-width-alert">How are we doing? <a href="https://mit.co1.qualtrics.com/jfe/form/SV_0HZvFmPYRjCzSCO">Give us feedback on your search experience</a>.</div>';
 
   var app = angular.module("viewCustom", ["angularLoad"]);
-  app.factory("tacosService", ["$http", function ($http) {
-    return {
-      sendQueryToTacos: function (searchTerm) {
-        var graphQlQuery = `{
+  app.factory("tacosService", [
+    "$http",
+    function ($http) {
+      return {
+        sendQueryToTacos: function (searchTerm) {
+          var graphQlQuery = `{
           logSearchEvent(searchTerm: "${searchTerm}", sourceSystem: "primo-testing") {
             phrase
             detectors {
@@ -18,25 +20,26 @@
             }
           }
         }`;
-        var req = {
-          method: "POST",
-          url: "https://tacos-stage-0386f762f11f.herokuapp.com/graphql",
-          headers: {
-            "accept": "application/json",
-            "Content-Type": "application/json",
-          },
-          data: {
-            "query": graphQlQuery,
-          },
-        };
-        return $http(req);
-      },
-    };
-  }]);
+          var req = {
+            method: "POST",
+            url: "https://tacos-stage-0386f762f11f.herokuapp.com/graphql",
+            headers: {
+              accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            data: {
+              query: graphQlQuery,
+            },
+          };
+          return $http(req);
+        },
+      };
+    },
+  ]);
   app.component("prmSearchBookmarkFilterAfter", {
-      template:
-        '<div id="ask-us-mit"><a href="https://libraries.mit.edu/ask" aria-expanded="false" aria-controls="collapsible--1"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16.593px" height="16px" viewBox="0 0 16.593 16" enable-background="new 0 0 16.593 16" xml:space="preserve"><path d="M16.593 6.278c0 1.074-0.074 2.148-0.241 3.185 -0.204 1.353-1.722 2.574-3.055 2.722 -1.353 0.131-2.686 0.204-4.02 0.223L5.74 15.833C5.63 15.944 5.481 16 5.334 16c-0.094 0-0.167-0.019-0.241-0.037C4.871 15.87 4.74 15.647 4.74 15.407V12.37c-0.481-0.036-0.963-0.055-1.443-0.111 -1.334-0.148-2.853-1.443-3.074-2.796C0.074 8.426 0 7.352 0 6.296c0-1.092 0.074-2.185 0.223-3.24 0.222-1.352 1.74-2.648 3.074-2.797C4.963 0.093 6.63 0 8.297 0s3.333 0.093 5 0.259c1.333 0.149 2.851 1.445 3.055 2.797C16.519 4.111 16.593 5.204 16.593 6.278"></path></svg><span>Ask Us</span></a></div>',
-    });
+    template:
+      '<div id="ask-us-mit"><a href="https://libraries.mit.edu/ask" aria-expanded="false" aria-controls="collapsible--1"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16.593px" height="16px" viewBox="0 0 16.593 16" enable-background="new 0 0 16.593 16" xml:space="preserve"><path d="M16.593 6.278c0 1.074-0.074 2.148-0.241 3.185 -0.204 1.353-1.722 2.574-3.055 2.722 -1.353 0.131-2.686 0.204-4.02 0.223L5.74 15.833C5.63 15.944 5.481 16 5.334 16c-0.094 0-0.167-0.019-0.241-0.037C4.871 15.87 4.74 15.647 4.74 15.407V12.37c-0.481-0.036-0.963-0.055-1.443-0.111 -1.334-0.148-2.853-1.443-3.074-2.796C0.074 8.426 0 7.352 0 6.296c0-1.092 0.074-2.185 0.223-3.24 0.222-1.352 1.74-2.648 3.074-2.797C4.963 0.093 6.63 0 8.297 0s3.333 0.093 5 0.259c1.333 0.149 2.851 1.445 3.055 2.797C16.519 4.111 16.593 5.204 16.593 6.278"></path></svg><span>Ask Us</span></a></div>',
+  });
   app.component("prmLogoAfter", {
     template:
       '<div id="title-mit"><a href="https://mit.primo.exlibrisgroup.com/discovery/search?vid=01MIT_INST:MIT&lang=en">Search Our Collections</a></div>',
@@ -57,39 +60,41 @@
         // Returns searchQuery if it is a string.
         // If searchQuery is an array of strings, joins the strings and returns the result
 
-        if (typeof searchQuery === "string") { // handle a string (simple search)
+        if (typeof searchQuery === "string") {
+          // handle a string (simple search)
           return searchQuery;
         }
         return searchQuery.join(" "); // handle an array of strings (advanced search)
       }
 
-      $scope.$watch(function () {
-        // Watch for changes to the $stateParams.query property
+      $scope.$watch(
+        function () {
+          // Watch for changes to the $stateParams.query property
 
-        return parseSearchQuery(
-          $stateParams.query,
-        );
-      }, function (newSearchQuery) {
-        // This listener function triggers when the watcher is first initialized and
-        // each time the results of the watched expression change afterward.
-        // During the initial trigger, the listener will send a search query to TACOS
-        // if the client's initial request to Primo includes search parameters.
-        // This behavior is desirable because it ensures that TACOS receives a search query
-        // right from the start. Without it, TACOS would only receive queries on subsequent user searches.
+          return parseSearchQuery($stateParams.query);
+        },
+        function (newSearchQuery) {
+          // This listener function triggers when the watcher is first initialized and
+          // each time the results of the watched expression change afterward.
+          // During the initial trigger, the listener will send a search query to TACOS
+          // if the client's initial request to Primo includes search parameters.
+          // This behavior is desirable because it ensures that TACOS receives a search query
+          // right from the start. Without it, TACOS would only receive queries on subsequent user searches.
 
-        if (newSearchQuery) { //avoid sending 'undefined' searches to TACOS
-          tacosService.sendQueryToTacos(newSearchQuery).then(
-            function (response) {
-              console.log(response);
-              vm.searchTerms = response.data.data.logSearchEvent.phrase;
-            },
-          );
+          if (newSearchQuery) {
+            //avoid sending 'undefined' searches to TACOS
+            tacosService
+              .sendQueryToTacos(newSearchQuery)
+              .then(function (response) {
+                console.log(response);
+                vm.searchTerms = response.data.data.logSearchEvent.phrase;
+              });
+          }
         }
-      });
+      );
     },
 
-    template:
-      `<p ng-if="$ctrl.searchTerms">this is the tacos component: TACOS says"{{$ctrl.searchTerms }}" </p>`,
+    template: `<p ng-if="$ctrl.searchTerms">this is the tacos component: TACOS says"{{$ctrl.searchTerms }}" </p>`,
   });
 
   app.component("prmAtozSearchBarAfter", {
