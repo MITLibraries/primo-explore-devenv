@@ -64,7 +64,7 @@
           // handle a string (simple search)
           return searchQuery;
         }
-        return searchQuery.join(" "); // handle an array of strings (advanced search)
+        return searchQuery.join(";;"); // handle an array of strings (advanced search)
       }
 
       $scope.$watch(
