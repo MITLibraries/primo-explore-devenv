@@ -22,7 +22,7 @@
         }`;
           var req = {
             method: "POST",
-            url: "https://tacos-stage-0386f762f11f.herokuapp.com/graphql",
+            url: "https://tacos-api-pipeline-pr-143.herokuapp.com/graphql",
             headers: {
               accept: "application/json",
               "Content-Type": "application/json",
