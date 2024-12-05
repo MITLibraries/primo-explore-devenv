@@ -9,20 +9,11 @@
     function ($http) {
       return {
         sendQueryToTacos: function (searchQuery) {
-          var graphQlQuery = `{
-          logSearchEvent(searchTerm: "${searchQuery}", sourceSystem: "primo-testing") {
-            phrase
-            detectors {
-              suggestedResources {
-                title
-                url
-              }
-            }
-          }
-        }`;
+          var graphQlQuery = '{logSearchEvent(searchTerm: "' + searchQuery + '", sourceSystem: "primo") ' +
+            '{phrase detectors {suggestedResources {title url}}}}';
           var req = {
             method: "POST",
-            url: "https://tacos-api-pipeline-pr-143.herokuapp.com/graphql",
+            url: "https://tacos-stage-0386f762f11f.herokuapp.com/graphql",
             headers: {
               accept: "application/json",
               "Content-Type": "application/json",
@@ -57,14 +48,12 @@
       var vm = this;
 
       function parseSearchQuery(searchQuery) {
-        // Returns searchQuery if it is a string.
         // If searchQuery is an array of strings, joins the strings and returns the result
-
-        if (typeof searchQuery === "string") {
-          // handle a string (simple search)
-          return searchQuery;
+        // TACOS expects ;;; as the separator when there are multiple search strings in a query 
+        if (typeof searchQuery === "object") {
+          searchQuery = searchQuery.join(";;;"); // handle an array of strings (advanced search)
         }
-        return searchQuery.join(";;"); // handle an array of strings (advanced search)
+        return searchQuery;
       }
 
       $scope.$watch(
@@ -94,7 +83,7 @@
       );
     },
 
-    template: `<p ng-if="$ctrl.tacosResponse">this is the tacos component: TACOS says"{{$ctrl.tacosResponse}}" </p>`,
+
   });
 
   app.component("prmAtozSearchBarAfter", {
