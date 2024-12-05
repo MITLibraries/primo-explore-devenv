@@ -70,7 +70,7 @@
           // This behavior is desirable because it ensures that TACOS receives a search query
           // right from the start. Without it, TACOS would only receive queries on subsequent user searches.
 
-          if (newSearchQuery) {
+          if (newSearchQuery !== undefined) {
             //avoid sending 'undefined' searches to TACOS
             tacosService
               .sendQueryToTacos(newSearchQuery)
