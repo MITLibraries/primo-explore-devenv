@@ -6,7 +6,7 @@ app.component("prmSearchBookmarkFilterAfter", {
 });
 app.component("prmLogoAfter", {
     template:
-        '<div id="title-mit"><a href="https://mit.primo.exlibrisgroup.com/discovery/search?vid=01MIT_INST:MIT&lang=en">Search Our Collections</a></div>',
+        '<mit-soc-title></mit-soc-title>',
 });
 app.component("prmSearchBarAfter", {
     template: `<tacos></tacos><mit-alert-banner></mit-alert-banner>`,

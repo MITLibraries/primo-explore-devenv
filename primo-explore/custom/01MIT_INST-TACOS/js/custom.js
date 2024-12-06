@@ -8,7 +8,7 @@ app.component("prmSearchBookmarkFilterAfter", {
     template: '<mit-ask-us></mit-ask-us>'
 });
 app.component("prmLogoAfter", {
-    template: '<div id="title-mit"><a href="https://mit.primo.exlibrisgroup.com/discovery/search?vid=01MIT_INST:MIT&lang=en">Search Our Collections</a></div>'
+    template: '<mit-soc-title></mit-soc-title>'
 });
 app.component("prmSearchBarAfter", {
     template: "<tacos></tacos><mit-alert-banner></mit-alert-banner>"
@@ -60,6 +60,9 @@ app.component("mitNoSearchResult", {
         };
     },
     template: noResultTemplate
+});
+app.component("mitSocTitle", {
+    template: '<div id="title-mit"><a href="https://mit.primo.exlibrisgroup.com/discovery/search?vid=01MIT_INST:MIT&lang=en">Search Our Collections</a></div>'
 });
 app.factory("tacosService", ["$http", function ($http) {
     return {
