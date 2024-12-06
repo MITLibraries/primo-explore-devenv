@@ -22,7 +22,7 @@ app.factory("tacosService", [
     },
 ]);
 
-app.component("tacos", {
+app.component("mitTacos", {
     controller: function tacosController($scope, tacosService, $stateParams) {
         // $stateParams seems to behave like an angularJS service, but I'm not sure
         // where in the Primo VE source code it is defined...

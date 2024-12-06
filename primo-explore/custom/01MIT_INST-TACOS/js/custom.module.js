@@ -9,7 +9,7 @@ app.component("prmLogoAfter", {
         '<mit-soc-title></mit-soc-title>',
 });
 app.component("prmSearchBarAfter", {
-    template: `<tacos></tacos><mit-alert-banner></mit-alert-banner>`,
+    template: `<mit-tacos></mit-tacos><mit-alert-banner></mit-alert-banner>`,
 });
 app.component("prmAtozSearchBarAfter", {
     template: '<mit-alert-banner></mit-alert-banner>',

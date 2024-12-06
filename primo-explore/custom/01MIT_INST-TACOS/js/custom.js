@@ -11,7 +11,7 @@ app.component("prmLogoAfter", {
     template: '<mit-soc-title></mit-soc-title>'
 });
 app.component("prmSearchBarAfter", {
-    template: "<tacos></tacos><mit-alert-banner></mit-alert-banner>"
+    template: "<mit-tacos></mit-tacos><mit-alert-banner></mit-alert-banner>"
 });
 app.component("prmAtozSearchBarAfter", {
     template: '<mit-alert-banner></mit-alert-banner>'
@@ -84,7 +84,7 @@ app.factory("tacosService", ["$http", function ($http) {
     };
 }]);
 
-app.component("tacos", {
+app.component("mitTacos", {
     controller: function tacosController($scope, tacosService, $stateParams) {
         // $stateParams seems to behave like an angularJS service, but I'm not sure
         // where in the Primo VE source code it is defined...
