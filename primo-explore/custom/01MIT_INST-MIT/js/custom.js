@@ -11,7 +11,7 @@ app.component("prmLogoAfter", {
     template: '<mit-soc-title></mit-soc-title>'
 });
 app.component("prmSearchBarAfter", {
-    template: "<mit-alert-banner></mit-alert-banner>"
+    template: "<mit-tacos></mit-tacos><mit-alert-banner></mit-alert-banner>"
 });
 app.component("prmAtozSearchBarAfter", {
     template: '<mit-alert-banner></mit-alert-banner>'
@@ -49,61 +49,6 @@ setTimeout(function () {
 }, 2000);
 
 /*---------------libchat code ends here---------------*/
-// Begin BrowZine - Primo Integration...
-window.browzine = {
-
-    libraryId: "853",
-    apiKey: "511d4ee2-2169-4ac4-928b-2641284eeb30",
-
-    journalCoverImagesEnabled: true,
-
-    journalBrowZineWebLinkTextEnabled: true,
-    journalBrowZineWebLinkText: "View Journal Contents",
-
-    articleBrowZineWebLinkTextEnabled: true,
-    articleBrowZineWebLinkText: "Browse journal issue",
-
-    articlePDFDownloadLinkEnabled: true,
-    articlePDFDownloadLinkText: "Get PDF",
-
-    articleLinkEnabled: true,
-    articleLinkText: "Read online",
-
-    printRecordsIntegrationEnabled: true,
-    showFormatChoice: true,
-    showLinkResolverLink: false,
-    enableLinkOptimizer: true,
-
-    articleRetractionWatchEnabled: true,
-    articleRetractionWatchText: "Retracted Article",
-
-    articleExpressionOfConcernEnabled: true,
-    articleExpressionOfConcernText: "Expression of Concern",
-
-    unpaywallEmailAddressKey: "enter-your-email@your-institution-domain.edu",
-    articlePDFDownloadViaUnpaywallEnabled: true,
-    articlePDFDownloadViaUnpaywallText: "Download PDF (via Unpaywall)",
-    articleLinkViaUnpaywallEnabled: true,
-    articleLinkViaUnpaywallText: "Read Article (via Unpaywall)",
-    articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
-    articleAcceptedManuscriptPDFViaUnpaywallText: "Download PDF (Accepted Manuscript via Unpaywall)",
-    articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
-    articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall)"
-};
-
-browzine.script = document.createElement("script");
-browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
-document.head.appendChild(browzine.script);
-
-app.controller('prmSearchResultAvailabilityLineAfterController', function ($scope) {
-    window.browzine.primo.searchResult($scope);
-});
-
-app.component('prmSearchResultAvailabilityLineAfter', {
-    bindings: { parentCtrl: '<' },
-    controller: 'prmSearchResultAvailabilityLineAfterController'
-});
-// ... End BrowZine - Primo Integration
 var noResultTemplate = "<md-card class=\"default-card zero-margin _md md-primoExplore-theme\">\n            <md-card-title>\n                <md-card-title-text>\n                    <span class=\"md-headline\">Oops, no records found! Let's keep digging...</span>\n                </md-card-title-text>\n            </md-card-title>\n            <md-card-content>\n                <p><span class=\"bold-text\">No results matching \"{{$ctrl.getSearchTerm}}\". Is the spelling correct?</span></p>\n                <p><span >More options:</span></p>\n                    <ul>\n                        <li>Articles: Select the \"Search in full text\" checkbox in the sidebar, or request via <a href=\"https://libraries.mit.edu/illiad\">ILB/ILLiad</a>.</li>\n                        <li>If you have not already logged in, doing so may retrieve more results.</li>\n                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\">WorldCat</a>.</li>\n                        <li>Archives and manuscripts: Search and request via <a href=\"http://archivesspace.mit.edu/\">ArchivesSpace</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/suggest-purchase\">Suggest a purchase</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/ask\">Ask Us</a> for more help!</li>\n                    </ul>\n            </md-card-content>\n        </md-card>\n        ";
 
 app.component("mitNoSearchResult", {
@@ -121,5 +66,62 @@ app.component("mitNoSearchResult", {
 });
 app.component("mitSocTitle", {
     template: '<div id="title-mit"><a href="https://mit.primo.exlibrisgroup.com/discovery/search?vid=01MIT_INST:MIT&lang=en">Search Our Collections</a></div>'
+});
+app.factory("tacosService", ["$http", function ($http) {
+    return {
+        sendQueryToTacos: function sendQueryToTacos(searchQuery) {
+            var graphQlQuery = '{logSearchEvent(searchTerm: "' + searchQuery + '", sourceSystem: "primo-production") ' + '{phrase detectors {suggestedResources {title url}}}}';
+            var req = {
+                method: "POST",
+                url: "https://tacos.libraries.mit.edu/graphql",
+                headers: {
+                    accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    query: graphQlQuery
+                }
+            };
+            return $http(req);
+        }
+    };
+}]);
+
+app.component("mitTacos", {
+    controller: function tacosController($scope, tacosService, $stateParams) {
+
+        var vm = this;
+
+        function parseSearchQuery(searchQuery) {
+            // If searchQuery is an array of strings, joins the strings and returns the result
+            // TACOS expects ;;; as the separator when there are multiple search strings in a query 
+            if (Array.isArray(searchQuery)) {
+                searchQuery = searchQuery.join(";;;"); // handle an array of strings (advanced search)
+            }
+            return searchQuery;
+        }
+
+        $scope.$watch(function () {
+            // Watch for changes to the $stateParams.query property
+
+            return parseSearchQuery($stateParams.query);
+        }, function (newSearchQuery) {
+            // This listener function triggers when the watcher is first initialized and
+            // each time the results of the watched expression change afterward.
+            // During the initial trigger, the listener will send a search query to TACOS
+            // if the client's initial request to Primo includes search parameters.
+            // This behavior is desirable because it ensures that TACOS receives a search query
+            // right from the start. Without it, TACOS would only receive queries on subsequent user searches.
+
+            if (newSearchQuery !== undefined) {
+                //avoid sending 'undefined' searches to TACOS
+                tacosService.sendQueryToTacos(newSearchQuery).then(function (response) {
+                    console.log(response);
+                    vm.tacosResponse = response.data.data.logSearchEvent.phrase;
+                });
+            }
+        });
+    }
+
 });
 })();
