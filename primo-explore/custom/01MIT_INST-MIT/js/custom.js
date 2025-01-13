@@ -2,7 +2,7 @@
 "use strict";
 "use strict";
 
-var app = angular.module("viewCustom", ["angularLoad"]);
+var app = angular.module("viewCustom", ["angularLoad", 'matomoAnalytics']);
 
 app.component("prmSearchBookmarkFilterAfter", {
     template: '<mit-ask-us></mit-ask-us>'
@@ -20,7 +20,7 @@ app.component("prmBrowseSearchBarAfter", {
     template: '<mit-alert-banner></mit-alert-banner>'
 });
 app.component("prmNoSearchResultAfter", {
-    template: '<mit-no-search-result></mit-no-search-result>'
+    template: '<mit-no-search-result data-track-content data-content-name="no results"></mit-no-search-result>'
 });
 
 var alertBannerTemplate = '<div ng-if="$ctrl.active" class="full-width-alert">How are we doing? <a href="https://mit.co1.qualtrics.com/jfe/form/SV_0HZvFmPYRjCzSCO">Give us feedback on your search experience</a>.</div>';
@@ -49,7 +49,58 @@ setTimeout(function () {
 }, 2000);
 
 /*---------------libchat code ends here---------------*/
-var noResultTemplate = "<md-card class=\"default-card zero-margin _md md-primoExplore-theme\">\n            <md-card-title>\n                <md-card-title-text>\n                    <span class=\"md-headline\">Oops, no records found! Let's keep digging...</span>\n                </md-card-title-text>\n            </md-card-title>\n            <md-card-content>\n                <p><span class=\"bold-text\">No results matching \"{{$ctrl.getSearchTerm}}\". Is the spelling correct?</span></p>\n                <p><span >More options:</span></p>\n                    <ul>\n                        <li>Articles: Select the \"Search in full text\" checkbox in the sidebar, or request via <a href=\"https://libraries.mit.edu/illiad\">ILB/ILLiad</a>.</li>\n                        <li>If you have not already logged in, doing so may retrieve more results.</li>\n                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\">WorldCat</a>.</li>\n                        <li>Archives and manuscripts: Search and request via <a href=\"http://archivesspace.mit.edu/\">ArchivesSpace</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/suggest-purchase\">Suggest a purchase</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/ask\">Ask Us</a> for more help!</li>\n                    </ul>\n            </md-card-content>\n        </md-card>\n        ";
+angular.module('matomoAnalytics', []);
+angular.module('matomoAnalytics').run(function ($rootScope, $interval, analyticsOptions) {
+    if (analyticsOptions.hasOwnProperty("enabled") && analyticsOptions.enabled) {
+        if (analyticsOptions.hasOwnProperty("siteId") && analyticsOptions.siteId != '' && analyticsOptions.hasOwnProperty("siteUrl") && analyticsOptions.siteUrl != '') {
+            if (typeof _paq === 'undefined') {
+                window['_paq'] = [];
+                _paq.push(['trackPageView']);
+                _paq.push(['trackVisibleContentImpressions']);
+                _paq.push(['logAllContentBlocksOnPage']);
+                _paq.push(['enableLinkTracking']);
+                (function () {
+                    _paq.push(['setTrackerUrl', analyticsOptions.siteUrl + 'matomo.php']);
+                    _paq.push(['setSiteId', analyticsOptions.siteId]);
+                    var d = document,
+                        g = d.createElement('script'),
+                        s = d.getElementsByTagName('script')[0];
+                    g.type = 'text/javascript';g.async = true;g.defer = true;g.src = analyticsOptions.siteUrl + 'matomo.js';s.parentNode.insertBefore(g, s);
+                })();
+            }
+        }
+        $rootScope.$on('$locationChangeSuccess', function (event, toState, fromState) {
+            if (analyticsOptions.hasOwnProperty("defaultTitle")) {
+                var documentTitle = analyticsOptions.defaultTitle;
+                var timerStart = Date.now();
+                var interval = $interval(function () {
+                    if (document.title !== '') documentTitle = document.title;
+                    if (window.location.pathname.indexOf('openurl') !== -1 || window.location.pathname.indexOf('fulldisplay') !== -1) if (angular.element(document.querySelector('prm-full-view-service-container .item-title>a')).length === 0) return;else documentTitle = angular.element(document.querySelector('prm-full-view-service-container .item-title>a')).text();
+
+                    if (typeof _paq !== 'undefined') {
+                        if (fromState != toState) _paq.push(['setReferrerUrl', fromState]);
+                        _paq.push(['setCustomUrl', toState]);
+                        _paq.push(['setDocumentTitle', documentTitle]);
+                        _paq.push(['setGenerationTimeMs', Date.now() - timerStart]);
+                        _paq.push(['enableLinkTracking']);
+                        _paq.push(['enableHeartBeatTimer']);
+                        _paq.push(['trackPageView']);
+                        _paq.push(['trackVisibleContentImpressions']);
+                        _paq.push(['logAllContentBlocksOnPage']);
+                    }
+                    $interval.cancel(interval);
+                }, 0);
+            }
+        });
+    }
+});
+angular.module('matomoAnalytics').value('analyticsOptions', {
+    enabled: true,
+    siteId: '12',
+    siteUrl: 'https://matomo.libraries.mit.edu/',
+    defaultTitle: 'Search our Collections'
+});
+var noResultTemplate = "<md-card class=\"default-card zero-margin _md md-primoExplore-theme\">\n            <md-card-title>\n                <md-card-title-text>\n                    <span class=\"md-headline\">Oops, no records found! Let's keep digging...</span>\n                </md-card-title-text>\n            </md-card-title>\n            <md-card-content>\n                <p><span class=\"bold-text\">No results matching \"{{$ctrl.getSearchTerm}}\". Is the spelling correct?</span></p>\n                <p><span >More options:</span></p>\n                    <ul>\n                        <li>Articles: Select the \"Search in full text\" checkbox in the sidebar, or request via <a href=\"https://libraries.mit.edu/illiad\">ILB/ILLiad</a>.</li>\n                        <li>If you have not already logged in, doing so may retrieve more results.</li>\n                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\" data-content-target=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\">WorldCat</a>.</li>\n                        <li>Archives and manuscripts: Search and request via <a href=\"http://archivesspace.mit.edu/\">ArchivesSpace</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/suggest-purchase\">Suggest a purchase</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/ask\">Ask Us</a> for more help!</li>\n                    </ul>\n            </md-card-content>\n        </md-card>\n        ";
 
 app.component("mitNoSearchResult", {
     //require the controller for the prmNoSearchResult directive
