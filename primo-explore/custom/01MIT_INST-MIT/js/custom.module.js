@@ -1,4 +1,4 @@
-var app = angular.module("viewCustom", ["angularLoad", 'matomoAnalytics']);
+var app = angular.module("viewCustom", ["angularLoad"]);
 
 app.component("prmSearchBookmarkFilterAfter", {
     template:
