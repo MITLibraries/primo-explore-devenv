@@ -49,6 +49,61 @@ setTimeout(function () {
 }, 2000);
 
 /*---------------libchat code ends here---------------*/
+// Begin BrowZine - Primo Integration...
+window.browzine = {
+
+    libraryId: "853",
+    apiKey: "511d4ee2-2169-4ac4-928b-2641284eeb30",
+
+    journalCoverImagesEnabled: true,
+
+    journalBrowZineWebLinkTextEnabled: true,
+    journalBrowZineWebLinkText: "View Journal Contents",
+
+    articleBrowZineWebLinkTextEnabled: true,
+    articleBrowZineWebLinkText: "Browse journal issue",
+
+    articlePDFDownloadLinkEnabled: true,
+    articlePDFDownloadLinkText: "Get PDF",
+
+    articleLinkEnabled: true,
+    articleLinkText: "Read online",
+
+    printRecordsIntegrationEnabled: true,
+    showFormatChoice: true,
+    showLinkResolverLink: false,
+    enableLinkOptimizer: true,
+
+    articleRetractionWatchEnabled: true,
+    articleRetractionWatchText: "Retracted Article",
+
+    articleExpressionOfConcernEnabled: true,
+    articleExpressionOfConcernText: "Expression of Concern",
+
+    unpaywallEmailAddressKey: "ils-lib@mit.edu",
+    articlePDFDownloadViaUnpaywallEnabled: true,
+    articlePDFDownloadViaUnpaywallText: "Download PDF (via Unpaywall)",
+    articleLinkViaUnpaywallEnabled: true,
+    articleLinkViaUnpaywallText: "Read Article (via Unpaywall)",
+    articleAcceptedManuscriptPDFViaUnpaywallEnabled: true,
+    articleAcceptedManuscriptPDFViaUnpaywallText: "Download PDF (Accepted Manuscript via Unpaywall)",
+    articleAcceptedManuscriptArticleLinkViaUnpaywallEnabled: true,
+    articleAcceptedManuscriptArticleLinkViaUnpaywallText: "Read Article (Accepted Manuscript via Unpaywall)"
+};
+
+browzine.script = document.createElement("script");
+browzine.script.src = "https://s3.amazonaws.com/browzine-adapters/primo/browzine-primo-adapter.js";
+document.head.appendChild(browzine.script);
+
+app.controller('prmSearchResultAvailabilityLineAfterController', function ($scope) {
+    window.browzine.primo.searchResult($scope);
+});
+
+app.component('prmSearchResultAvailabilityLineAfter', {
+    bindings: { parentCtrl: '<' },
+    controller: 'prmSearchResultAvailabilityLineAfterController'
+});
+// ... End BrowZine - Primo Integration
 var noResultTemplate = "<md-card class=\"default-card zero-margin _md md-primoExplore-theme\">\n            <md-card-title>\n                <md-card-title-text>\n                    <span class=\"md-headline\">Oops, no records found! Let's keep digging...</span>\n                </md-card-title-text>\n            </md-card-title>\n            <md-card-content>\n                <p><span class=\"bold-text\">No results matching \"{{$ctrl.getSearchTerm}}\". Is the spelling correct?</span></p>\n                <p><span >More options:</span></p>\n                    <ul>\n                        <li>Articles: Select the \"Search in full text\" checkbox in the sidebar, or request via <a href=\"https://libraries.mit.edu/illiad\">ILB/ILLiad</a>.</li>\n                        <li>If you have not already logged in, doing so may retrieve more results.</li>\n                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\">WorldCat</a>.</li>\n                        <li>Archives and manuscripts: Search and request via <a href=\"http://archivesspace.mit.edu/\">ArchivesSpace</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/suggest-purchase\">Suggest a purchase</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/ask\">Ask Us</a> for more help!</li>\n                    </ul>\n            </md-card-content>\n        </md-card>\n        ";
 
 app.component("mitNoSearchResult", {
