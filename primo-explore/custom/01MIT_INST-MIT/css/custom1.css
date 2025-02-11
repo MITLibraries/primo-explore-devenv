@@ -5095,7 +5095,7 @@ div#ask-us-mit {
 /*----- add title after logo -----*/
 
 div#title-mit {
-  padding: 25px;
+  padding: 15px;
 }
 
 div#title-mit a {
@@ -5269,4 +5269,8 @@ prm-browse-search-bar {
   .full-width-alert {
     margin-bottom: -1.5rem;
   }
+}
+
+prm-quick-link a span {
+  color: #0000ff
 }
