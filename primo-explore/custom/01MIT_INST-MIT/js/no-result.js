@@ -10,7 +10,7 @@ var noResultTemplate = `<md-card class="default-card zero-margin _md md-primoExp
                     <ul>
                         <li>Articles: Select the "Search in full text" checkbox in the sidebar, or request via <a href="https://libraries.mit.edu/illiad">ILB/ILLiad</a>.</li>
                         <li>If you have not already logged in, doing so may retrieve more results.</li>
-                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href="https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}">WorldCat</a>.</li>
+                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href="https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}" data-content-target="https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}">WorldCat</a>.</li>
                         <li>Archives and manuscripts: Search and request via <a href="http://archivesspace.mit.edu/">ArchivesSpace</a>.</li>
                         <li><a href="https://libraries.mit.edu/suggest-purchase">Suggest a purchase</a>.</li>
                         <li><a href="https://libraries.mit.edu/ask">Ask Us</a> for more help!</li>

@@ -20,7 +20,7 @@ app.component("prmBrowseSearchBarAfter", {
     template: '<mit-alert-banner></mit-alert-banner>'
 });
 app.component("prmNoSearchResultAfter", {
-    template: '<mit-no-search-result></mit-no-search-result>'
+    template: '<mit-no-search-result data-track-content data-content-name="no results"></mit-no-search-result>'
 });
 
 var alertBannerTemplate = '<div ng-if="$ctrl.active" class="full-width-alert">How are we doing? <a href="https://mit.co1.qualtrics.com/jfe/form/SV_0HZvFmPYRjCzSCO">Give us feedback on your search experience</a>.</div>';
@@ -104,7 +104,19 @@ app.component('prmSearchResultAvailabilityLineAfter', {
     controller: 'prmSearchResultAvailabilityLineAfterController'
 });
 // ... End BrowZine - Primo Integration
-var noResultTemplate = "<md-card class=\"default-card zero-margin _md md-primoExplore-theme\">\n            <md-card-title>\n                <md-card-title-text>\n                    <span class=\"md-headline\">Oops, no records found! Let's keep digging...</span>\n                </md-card-title-text>\n            </md-card-title>\n            <md-card-content>\n                <p><span class=\"bold-text\">No results matching \"{{$ctrl.getSearchTerm}}\". Is the spelling correct?</span></p>\n                <p><span >More options:</span></p>\n                    <ul>\n                        <li>Articles: Select the \"Search in full text\" checkbox in the sidebar, or request via <a href=\"https://libraries.mit.edu/illiad\">ILB/ILLiad</a>.</li>\n                        <li>If you have not already logged in, doing so may retrieve more results.</li>\n                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\">WorldCat</a>.</li>\n                        <li>Archives and manuscripts: Search and request via <a href=\"http://archivesspace.mit.edu/\">ArchivesSpace</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/suggest-purchase\">Suggest a purchase</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/ask\">Ask Us</a> for more help!</li>\n                    </ul>\n            </md-card-content>\n        </md-card>\n        ";
+/* Matomo Tag Manager */
+
+var _mtm = window._mtm = window._mtm || [];
+_mtm.push({ 'mtm.startTime': new Date().getTime(), 'event': 'mtm.Start' });
+(function () {
+    var d = document,
+        g = d.createElement('script'),
+        s = d.getElementsByTagName('script')[0];
+    g.async = true;g.src = 'https://matomo.libraries.mit.edu/js/container_SF5ZTPZP.js';s.parentNode.insertBefore(g, s);
+})();
+
+/* End Matomo Tag Manager */
+var noResultTemplate = "<md-card class=\"default-card zero-margin _md md-primoExplore-theme\">\n            <md-card-title>\n                <md-card-title-text>\n                    <span class=\"md-headline\">Oops, no records found! Let's keep digging...</span>\n                </md-card-title-text>\n            </md-card-title>\n            <md-card-content>\n                <p><span class=\"bold-text\">No results matching \"{{$ctrl.getSearchTerm}}\". Is the spelling correct?</span></p>\n                <p><span >More options:</span></p>\n                    <ul>\n                        <li>Articles: Select the \"Search in full text\" checkbox in the sidebar, or request via <a href=\"https://libraries.mit.edu/illiad\">ILB/ILLiad</a>.</li>\n                        <li>If you have not already logged in, doing so may retrieve more results.</li>\n                        <li>Books, physical materials: Request via BorrowDirect/InterLibrary Borrowing (ILB) by finding the item in <a href=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\" data-content-target=\"https://mit.on.worldcat.org/search?queryString={{$ctrl.getSearchTerm}}\">WorldCat</a>.</li>\n                        <li>Archives and manuscripts: Search and request via <a href=\"http://archivesspace.mit.edu/\">ArchivesSpace</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/suggest-purchase\">Suggest a purchase</a>.</li>\n                        <li><a href=\"https://libraries.mit.edu/ask\">Ask Us</a> for more help!</li>\n                    </ul>\n            </md-card-content>\n        </md-card>\n        ";
 
 app.component("mitNoSearchResult", {
     //require the controller for the prmNoSearchResult directive
