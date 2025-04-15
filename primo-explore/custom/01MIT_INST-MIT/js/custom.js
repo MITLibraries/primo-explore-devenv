@@ -20,7 +20,7 @@ app.component("prmBrowseSearchBarAfter", {
     template: '<mit-alert-banner></mit-alert-banner>'
 });
 app.component("prmNoSearchResultAfter", {
-    template: '<mit-no-search-result data-track-content data-content-name="no results"></mit-no-search-result>'
+    template: '<mit-no-search-result></mit-no-search-result>'
 });
 
 var alertBannerTemplate = '<div ng-if="$ctrl.active" class="full-width-alert">How are we doing? <a href="https://mit.co1.qualtrics.com/jfe/form/SV_0HZvFmPYRjCzSCO">Give us feedback on your search experience</a>.</div>';
