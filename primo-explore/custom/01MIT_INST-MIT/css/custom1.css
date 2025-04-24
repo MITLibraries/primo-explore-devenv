@@ -2617,7 +2617,7 @@ prm-breadcrumbs .prm-hue1.md-chip.persistent-facet {
 prm-search-result-frbr-line a>prm-icon:first-child,
 prm-search-result-frbr-line .md-button.arrow-link-button .button-content>prm-icon:first-child,
 .md-button.arrow-link-button prm-search-result-frbr-line .button-content>prm-icon:first-child {
-  color: #ff7700;
+  color: #0000ff;
 }
 
 .prm-positive,
@@ -2999,6 +2999,10 @@ prm-favorites-warning-message .mobile-favorites-warning-message {
 }
 
 prm-favorites-warning-message md-toast {
+  background-color: #ffc800;
+}
+
+prm-timeout-toast md-toast .md-toast-content {
   background-color: #ffc800;
 }
 
