@@ -1,8 +1,8 @@
 'use strict';
 
-let customFile =  'custom.js';
-let customModuleFile =  'custom.module.js';
-let customCssFile =  'custom1.css';
+let customFile = 'custom.js';
+let customModuleFile = 'custom.module.js';
+let customCssFile = 'custom1.css';
 let mainFile = 'main.js';
 
 let browserify;
@@ -36,7 +36,7 @@ function getCas() {
 
 function setUseScss(_useScss) {
     useScss = _useScss;
-	this.useScss = _useScss;
+    this.useScss = _useScss;
 }
 
 function getUseScss() {
@@ -46,7 +46,7 @@ function getUseScss() {
 function setProxy(_proxy) {
     this.PROXY_SERVER = _proxy;
 }
-function getProxy(){
+function getProxy() {
     return PROXY_SERVER;
 }
 function getVe() {
@@ -72,16 +72,16 @@ function getReinstallNodeModules() {
     return reinstallNodeModules;
 }
 
-function getView(){
+function getView() {
     return view;
 }
 
 function customPath() {
-    return viewJsDir()+'/'+customFile;
+    return viewJsDir() + '/' + customFile;
 }
 
 function customModulePath() {
-    return viewJsDir()+'/'+customModuleFile;
+    return viewJsDir() + '/' + customModuleFile;
 }
 
 function viewHtmlDir() {
@@ -93,17 +93,17 @@ function viewJsDir() {
 }
 
 function mainPath() {
-    return viewJsDir()+'/*.js';
+    return viewJsDir() + '/*.js';
 }
 
 function mainJsPath() {
-    return viewJsDir()+'/main.js';
+    return viewJsDir() + '/main.js';
 }
 
 function customCssMainPath() {
-    return viewCssDir()+'/*.css';
+    return viewCssDir() + '/*.css';
 }
-function customColorsPath(){
+function customColorsPath() {
     return `colors.json`;
 }
 
