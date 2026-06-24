@@ -1,5 +1,23 @@
 /* primary color hook */
 /* commenttttt*/
+
+#title-mit {
+  white-space: nowrap;
+}
+
+/* Responsive font sizing */
+@media (max-width: 960px) {
+  #title-mit {
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 600px) {
+  #title-mit {
+    font-size: 0.8em;
+  }
+}
+
 .md-button {
   color: #3a3a3a;
 }
